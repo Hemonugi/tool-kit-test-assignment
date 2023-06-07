@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+docker exec "$(docker-compose ps -q php-fpm)" bash -c "composer $*"
