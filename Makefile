@@ -3,7 +3,7 @@ export
 
 docker_compose := $(shell command -v docker-compose -f docker-compose.yml -p se 2> /dev/null)
 
-# Запускает все необходимое для страта проекта
+# Запускает все необходимое для старта проекта
 init: up install
 	@echo '-------------------------'
 	@echo '| http://localhost:$(NGINX_HOST_HTTP_PORT) |'
