@@ -24,3 +24,6 @@ restart:
 install:
 	./docker/cli/composer install
 
+check-code:
+	@./docker/cli/phpstan analyze -c phpstan.neon
+	@./docker/cli/phpcs
