@@ -3,7 +3,14 @@
     <description>Basic PSR-12 ruleset with required declare(strict_types=1).</description>
     <file>./src</file>
     <file>./tests</file>
-    <rule ref="PSR12" />
+    <rule ref="PSR12">
+        <!--
+            Эти правила конфликтуют, с readonly class из PHP 8.2, поэтому игнорим.
+            Можно будет раскоментить когда Codesniffer зарелизят версию с фиксом.
+        -->
+        <exclude name="PSR1.Files.SideEffects"/>
+        <exclude name="PSR12.Files.FileHeader"/>
+    </rule>
     <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
         <properties>
             <property name="spacesCountAroundEqualsSign" type="int" value="0" />
