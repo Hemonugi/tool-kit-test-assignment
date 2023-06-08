@@ -1,7 +1,12 @@
 <?xml version="1.0"?>
 <ruleset name="Tool-Kit test assigment coding standard">
-    <description>Basic PSR-12 ruleset ready to be modified later if needed.</description>
+    <description>Basic PSR-12 ruleset with required declare(strict_types=1).</description>
     <file>./src</file>
     <file>./tests</file>
     <rule ref="PSR12" />
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
+        <properties>
+            <property name="spacesCountAroundEqualsSign" type="int" value="0" />
+        </properties>
+    </rule>
 </ruleset>
