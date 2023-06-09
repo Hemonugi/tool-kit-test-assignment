@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Hemonugi\ToolKitTestAssignment\Tests\Domain\Application;
 
+use DateTimeInterface;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationInterface;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationRepositoryInterface;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListAction;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListDto;
@@ -23,8 +25,8 @@ class GetListActionTest extends TestCase
     {
         $dto = new GetListDto();
         $result = [
-            new ViewDto(1, 'test', 'test', new \DateTime(), 'open'),
-            new ViewDto(2, 'test 2', 'test 2', new \DateTime(), 'closed'),
+            $this->createApplication(1, 'test', 'test', new \DateTime(), 'open'),
+            $this->createApplication(2, 'test 2', 'test 2', new \DateTime(), 'closed'),
         ];
 
         $repository = $this->createMock(ApplicationRepositoryInterface::class);
@@ -36,6 +38,21 @@ class GetListActionTest extends TestCase
 
         $list = (new GetListAction())($dto, $repository);
 
-        assertSame($result, $list);
+        assertSame('test', $list[0]->title);
+        assertSame('test 2', $list[1]->title);
+    }
+
+    private function createApplication(
+        int $id,
+        string $title,
+        string $text,
+        DateTimeInterface $dateTime,
+        string $status
+    ): ApplicationInterface {
+        $application = $this->createMock(ApplicationInterface::class);
+        $application->method('getViewDto')
+            ->willReturn(new ViewDto($id, $title, $text, $dateTime, $status));
+
+        return $application;
     }
 }

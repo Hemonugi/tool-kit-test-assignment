@@ -6,7 +6,7 @@ namespace Hemonugi\ToolKitTestAssignment\Domain\Application;
 
 use DateTimeInterface;
 
-readonly class GetListDto
+readonly final class GetListDto
 {
     /**
      * @param string[]|null $statuses список статусов заявок
@@ -19,7 +19,10 @@ readonly class GetListDto
         public ?DateTimeInterface $startDateTime = null,
         public ?DateTimeInterface $endDateTime = null,
     ) {
-        if ($this->startDateTime > $this->endDateTime) {
+        if (
+            $this->startDateTime !== null && $this->endDateTime !== null
+            && $this->startDateTime > $this->endDateTime
+        ) {
             throw new ValidationException();
         }
     }

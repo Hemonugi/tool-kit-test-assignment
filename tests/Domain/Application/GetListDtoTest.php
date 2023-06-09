@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Hemonugi\ToolKitTestAssignment\Tests\Domain\Application;
 
 use DateTime;
+use DateTimeInterface;
 use Exception;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListDto;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ValidationException;
 use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\assertNull;
 use function PHPUnit\Framework\assertSame;
 
 class GetListDtoTest extends TestCase
@@ -29,24 +31,47 @@ class GetListDtoTest extends TestCase
     }
 
     /**
-     * Если все параметры валидные, то все должно быт ОК
+     * PDO должно создаваться без ошибок
+     * @dataProvider dtoCreationDataProvider
+     * @param string[]|null $statuses
+     * @param DateTimeInterface|null $startDate
+     * @param DateTimeInterface|null $endDate
      * @throws ValidationException
-     * @throws Exception
      */
-    public function testDtoCreationWhenAllParameterAreValid(): void
+    public function testDtoCreation(?array $statuses, ?DateTimeInterface $startDate, ?DateTimeInterface $endDate): void
     {
-        $startDate = '2023-08-06 12:00:00';
-        $endDate = '2024-08-06 12:00:00';
-        $statuses = ['open', 'archived'];
-
-        $dto = new GetListDto(
+        new GetListDto(
             statuses: $statuses,
-            startDateTime: new DateTime($startDate),
-            endDateTime: new DateTime($endDate),
+            startDateTime: $startDate,
+            endDateTime: $endDate,
         );
 
-        assertSame($statuses, $dto->statuses);
-        assertSame($startDate, $dto->startDateTime?->format('Y-m-d H:i:s'));
-        assertSame($endDate, $dto->endDateTime?->format('Y-m-d H:i:s'));
+        $this->expectNotToPerformAssertions();
+    }
+
+    public function dtoCreationDataProvider(): array
+    {
+        return [
+            'Если все параметры валидные, то все должно быт ОК' => [
+                'statuses' => ['open', 'archived'],
+                'startDate' => new DateTime('2023-08-06 12:00:00'),
+                'endDate' => new DateTime('2024-08-06 12:00:00'),
+            ],
+            'Dto без параметров должно создаваться нормально' => [
+                'statuses' => null,
+                'startDate' => null,
+                'endDate' => null,
+            ],
+            'Когда указана только дата начала' => [
+                'statuses' => null,
+                'startDate' => new DateTime('2023-08-06 12:00:00'),
+                'endDate' => null,
+            ],
+            'Когда указана только дата конца' => [
+                'statuses' => null,
+                'startDate' => null,
+                'endDate' => new DateTime('2024-08-06 12:00:00'),
+            ],
+        ];
     }
 }

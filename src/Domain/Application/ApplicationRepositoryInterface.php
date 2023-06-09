@@ -8,7 +8,7 @@ interface ApplicationRepositoryInterface
 {
     /**
      * @param GetListDto $listDto
-     * @return ViewDto[]
+     * @return ApplicationInterface[]
      */
     public function getList(GetListDto $listDto): array;
 }

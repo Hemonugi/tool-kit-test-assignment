@@ -7,7 +7,7 @@ namespace Hemonugi\ToolKitTestAssignment\Domain\Application;
 /**
  * Получение списка заявок
  */
-class GetListAction
+final class GetListAction
 {
     /**
      * @param GetListDto $requestListDto
@@ -16,6 +16,9 @@ class GetListAction
      */
     public function __invoke(GetListDto $requestListDto, ApplicationRepositoryInterface $repository): array
     {
-        return $repository->getList($requestListDto);
+        return array_map(
+            fn(ApplicationInterface $application) => $application->getViewDto(),
+            $repository->getList($requestListDto)
+        );
     }
 }

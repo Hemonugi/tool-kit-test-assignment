@@ -6,6 +6,9 @@ namespace Hemonugi\ToolKitTestAssignment\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationInterface;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationRepositoryInterface;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListDto;
 use Hemonugi\ToolKitTestAssignment\Entity\Application;
 
 /**
@@ -16,7 +19,7 @@ use Hemonugi\ToolKitTestAssignment\Entity\Application;
  * @method Application[]    findAll()
  * @method Application[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ApplicationRepository extends ServiceEntityRepository
+class ApplicationRepository extends ServiceEntityRepository implements ApplicationRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -41,28 +44,27 @@ class ApplicationRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Application[] Returns an array of Application objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @inheritDoc
+     */
+    public function getList(GetListDto $listDto): array
+    {
+         $queryBuilder = $this->createQueryBuilder('a')
+            ->orderBy('a.create_date', 'DESC');
 
-//    public function findOneBySomeField($value): ?Application
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($listDto->statuses !== null && count($listDto->statuses) > 0) {
+            $queryBuilder->andWhere('a.status IN (:statuses)')
+                ->setParameter(':statuses', $listDto->statuses);
+        }
+        if ($listDto->startDateTime !== null) {
+            $queryBuilder->andWhere('a.create_date >= :start_date')
+                ->setParameter(':start_date', $listDto->startDateTime->format('Y-m-d H:i:s'));
+        }
+        if ($listDto->endDateTime !== null) {
+            $queryBuilder->andWhere('a.create_date <= :end_date')
+                ->setParameter(':end_date', $listDto->endDateTime->format('Y-m-d H:i:s'));
+        }
+
+        return  $queryBuilder->getQuery()->getResult();
+    }
 }
