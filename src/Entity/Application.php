@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationInterface;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationStatus;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\ChangeStatusDto;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\CreateDto;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ViewDto;
 use Hemonugi\ToolKitTestAssignment\Repository\ApplicationRepository;
@@ -74,5 +75,14 @@ class Application implements ApplicationInterface
             createDate: $clock->now(),
             status: ApplicationStatus::Open,
         );
+    }
+
+    /**
+     * Изменения статуса заявки
+     * @param ChangeStatusDto $dto
+     */
+    public function changeStatus(ChangeStatusDto $dto): void
+    {
+        $this->status = $dto->newStatus->value;
     }
 }
