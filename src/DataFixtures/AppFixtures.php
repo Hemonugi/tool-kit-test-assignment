@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Hemonugi\ToolKitTestAssignment\DataFixtures;
 
-use DateTime;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -19,7 +18,7 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $faker = FakerFactory::create();
+        $faker = FakerFactory::create('ru_RU');
 
         $date = new DateTimeImmutable('2022-06-16 12:00:00');
 
