@@ -7,9 +7,9 @@ namespace Hemonugi\ToolKitTestAssignment\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationInterface;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationStatus;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ViewDto;
 use Hemonugi\ToolKitTestAssignment\Repository\ApplicationRepository;
-use PHPUnit\Util\Exception;
 
 #[ORM\Entity(repositoryClass: ApplicationRepository::class)]
 class Application implements ApplicationInterface
@@ -43,8 +43,8 @@ class Application implements ApplicationInterface
             id: $this->id,
             title: $this->title,
             text: $this->text,
-            dateTime: $this->create_date,
-            status: $this->status
+            createDate: $this->create_date,
+            status: ApplicationStatus::fromString($this->status)
         );
     }
 }

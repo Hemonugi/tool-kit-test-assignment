@@ -9,7 +9,7 @@ use DateTimeInterface;
 readonly final class GetListDto
 {
     /**
-     * @param string[]|null $statuses список статусов заявок
+     * @param ApplicationStatus[]|null $statuses список статусов заявок
      * @param DateTimeInterface|null $startDateTime заявки после этой даты будут попадать в выборку
      * @param DateTimeInterface|null $endDateTime заявки до этой даты будут попадать в выборку
      * @throws ValidationException

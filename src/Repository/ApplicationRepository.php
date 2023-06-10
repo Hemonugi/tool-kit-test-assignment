@@ -6,7 +6,6 @@ namespace Hemonugi\ToolKitTestAssignment\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationInterface;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationRepositoryInterface;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListDto;
 use Hemonugi\ToolKitTestAssignment\Entity\Application;

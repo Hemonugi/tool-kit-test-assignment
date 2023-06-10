@@ -7,6 +7,7 @@ namespace Hemonugi\ToolKitTestAssignment\Tests\Domain\Application;
 use DateTimeInterface;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationInterface;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationRepositoryInterface;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationStatus;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListAction;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListDto;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ViewDto;
@@ -25,8 +26,8 @@ class GetListActionTest extends TestCase
     {
         $dto = new GetListDto();
         $result = [
-            $this->createApplication(1, 'test', 'test', new \DateTime(), 'open'),
-            $this->createApplication(2, 'test 2', 'test 2', new \DateTime(), 'closed'),
+            $this->createApplication(1, 'test', 'test', new \DateTime(), ApplicationStatus::Open),
+            $this->createApplication(2, 'test 2', 'test 2', new \DateTime(), ApplicationStatus::Closed),
         ];
 
         $repository = $this->createMock(ApplicationRepositoryInterface::class);
@@ -47,7 +48,7 @@ class GetListActionTest extends TestCase
         string $title,
         string $text,
         DateTimeInterface $dateTime,
-        string $status
+        ApplicationStatus $status
     ): ApplicationInterface {
         $application = $this->createMock(ApplicationInterface::class);
         $application->method('getViewDto')

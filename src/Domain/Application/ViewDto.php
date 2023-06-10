@@ -29,7 +29,7 @@ readonly final class ViewDto implements JsonSerializable
         public string $title,
         public string $text,
         public DateTimeInterface $createDate,
-        public string $status
+        public ApplicationStatus $status
     ) {
     }
 
@@ -40,7 +40,7 @@ readonly final class ViewDto implements JsonSerializable
             'title' => $this->title,
             'text' => $this->text,
             'createDate' => $this->createDate->format('Y-m-d H:i:s'),
-            'status' => $this->status,
+            'status' => $this->status->value,
         ];
     }
 }

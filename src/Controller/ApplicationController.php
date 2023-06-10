@@ -6,6 +6,7 @@ namespace Hemonugi\ToolKitTestAssignment\Controller;
 
 use DateTime;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationRepositoryInterface;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationStatus;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListAction;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListDto;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ValidationException;
@@ -43,7 +44,14 @@ class ApplicationController extends AbstractController
         name: 'statuses[]',
         description: 'Список статусов',
         in: 'query',
-        schema: new OA\Schema(type: 'array', items: new OA\Items(type: 'string'))
+        schema: new OA\Schema(
+            type: 'array',
+            items: new OA\Items(type: 'string', enum: [
+                ApplicationStatus::Open,
+                ApplicationStatus::Archived,
+                ApplicationStatus::Closed,
+            ])
+        )
     )]
     #[OA\Parameter(
         name: 'startDate',
