@@ -12,7 +12,7 @@ use Faker\Generator;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationStatus;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ChangeStatusDto;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\CreateDto;
-use Hemonugi\ToolKitTestAssignment\Domain\User\RegisterUserDto;
+use Hemonugi\ToolKitTestAssignment\Domain\User\RegisterDto;
 use Hemonugi\ToolKitTestAssignment\Entity\Application;
 use Hemonugi\ToolKitTestAssignment\Entity\User;
 use Symfony\Component\Clock\MockClock;
@@ -79,7 +79,7 @@ class AppFixtures extends Fixture
         $roles = [User::ROLE_CLIENT, User::ROLE_ADMIN];
 
         for ($i = 0; $i < 4; $i++) {
-            $dto = new RegisterUserDto(
+            $dto = new RegisterDto(
                 $this->faker->userName(),
                 $this->faker->phoneNumber(),
                 $this->faker->address(),

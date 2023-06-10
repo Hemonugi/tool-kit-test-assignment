@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Hemonugi\ToolKitTestAssignment\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Hemonugi\ToolKitTestAssignment\Domain\User\RegisterUserDto;
+use Hemonugi\ToolKitTestAssignment\Domain\User\RegisterDto;
+use Hemonugi\ToolKitTestAssignment\Domain\User\ViewDto;
 use Hemonugi\ToolKitTestAssignment\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -109,15 +110,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @param RegisterUserDto $registerUserDto
+     * @param RegisterDto $registerUserDto
      * @return self
      */
-    public static function createUser(RegisterUserDto $registerUserDto): self
+    public static function createUser(RegisterDto $registerUserDto): self
     {
         return new User(
             nick: $registerUserDto->nick,
             phone: $registerUserDto->phone,
             address: $registerUserDto->address,
+        );
+    }
+
+    /**
+     * Возвращает представление пользователя
+     * @return ViewDto
+     */
+    public function getViewDto(): ViewDto
+    {
+        return new ViewDto(
+            id: $this->id,
+            nick: $this->nick,
+            phone: $this->phone,
+            address: $this->address,
         );
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hemonugi\ToolKitTestAssignment\Domain\User;
 
-readonly final class RegisterUserDto
+readonly final class RegisterDto
 {
     public function __construct(
         public string $nick,
