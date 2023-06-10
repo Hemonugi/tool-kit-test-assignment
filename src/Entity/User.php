@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hemonugi\ToolKitTestAssignment\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Hemonugi\ToolKitTestAssignment\Domain\User\RegisterUserDto;
 use Hemonugi\ToolKitTestAssignment\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -13,6 +14,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public const ROLE_CLIENT = 'ROLE_CLIENT';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -36,21 +40,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 20)]
     private ?string $phone = null;
 
+    public function __construct(
+        string $nick,
+        string $phone,
+        string $address,
+    ) {
+        $this->nick = $nick;
+        $this->phone = $phone;
+        $this->address = $address;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getNick(): ?string
-    {
-        return $this->nick;
-    }
-
-    public function setNick(string $nick): static
-    {
-        $this->nick = $nick;
-
-        return $this;
     }
 
     /**
@@ -60,7 +62,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->nick;
+        return (string)$this->nick;
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     /**
@@ -69,17 +78,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        // guarantee every user at least has ROLE_CLIENT
+        $roles[] = self::ROLE_CLIENT;
 
         return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
     }
 
     /**
@@ -106,27 +108,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getAddress(): ?string
+    /**
+     * @param RegisterUserDto $registerUserDto
+     * @return self
+     */
+    public static function createUser(RegisterUserDto $registerUserDto): self
     {
-        return $this->address;
-    }
-
-    public function setAddress(string $address): static
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(string $phone): static
-    {
-        $this->phone = $phone;
-
-        return $this;
+        return new User(
+            nick: $registerUserDto->nick,
+            phone: $registerUserDto->phone,
+            address: $registerUserDto->address,
+        );
     }
 }
