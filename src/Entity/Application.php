@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hemonugi\ToolKitTestAssignment\Entity;
 
-use DateTime;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationInterface;
@@ -12,6 +12,7 @@ use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationStatus;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\CreateDto;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ViewDto;
 use Hemonugi\ToolKitTestAssignment\Repository\ApplicationRepository;
+use Psr\Clock\ClockInterface;
 
 #[ORM\Entity(repositoryClass: ApplicationRepository::class)]
 class Application implements ApplicationInterface
@@ -28,7 +29,7 @@ class Application implements ApplicationInterface
     private ?string $text = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $create_date = null;
+    private ?DateTimeInterface $create_date = null;
 
     #[ORM\Column(length: 255)]
     private ?string $status = null;
@@ -36,8 +37,8 @@ class Application implements ApplicationInterface
     public function __construct(
         string $title,
         string $text,
-        \DateTimeInterface $createDate,
-        ApplicationStatus $status
+        DateTimeInterface $createDate,
+        ApplicationStatus $status,
     ) {
         $this->title = $title;
         $this->text = $text;
@@ -62,15 +63,15 @@ class Application implements ApplicationInterface
     /**
      * Создает новую заявку
      * @param CreateDto $dto
+     * @param ClockInterface $clock
      * @return self
      */
-    public static function create(CreateDto $dto): self
+    public static function create(CreateDto $dto, ClockInterface $clock): self
     {
         return new Application(
             title: $dto->title,
             text: $dto->text,
-            //todo заменить на https://www.php-fig.org/psr/psr-20/ https://symfony.com/doc/current/components/clock.html
-            createDate: new DateTime('now'),
+            createDate: $clock->now(),
             status: ApplicationStatus::Open,
         );
     }
