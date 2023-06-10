@@ -29,3 +29,6 @@ install:
 check-code:
 	@./docker/cli/phpstan analyze -c phpstan.neon
 	@./docker/cli/phpcs
+
+load-fixtures:
+	./docker/cli/php bin/console doctrine:fixtures:load --no-interaction

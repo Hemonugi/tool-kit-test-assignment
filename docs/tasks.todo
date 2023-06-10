@@ -9,7 +9,7 @@
 Заявки:
  ✔ Получить список заявок @done (23-06-09 21:06)
    ✔ Добавить ENUM к статусу @critical @done (23-06-10 18:12)
-   ☐ Добавть update_date в DTO @critical
+   ✘ Добавть update_date в DTO @critical @cancelled (23-06-10 18:19)
    ☐ Добавить фикстуры @critical
    ✔ Добавить swager @critical @done (23-06-10 17:36)
    ☐ Добавить тесты на контроллер @critical
