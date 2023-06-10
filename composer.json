@@ -18,6 +18,7 @@
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.15",
+        "lexik/jwt-authentication-bundle": "^2.19",
         "nelmio/api-doc-bundle": "^4.11",
         "symfony/asset": "6.3.*",
         "symfony/clock": "6.3.*",
