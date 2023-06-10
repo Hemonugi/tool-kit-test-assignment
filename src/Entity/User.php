@@ -6,14 +6,15 @@ namespace Hemonugi\ToolKitTestAssignment\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Hemonugi\ToolKitTestAssignment\Domain\User\RegisterDto;
+use Hemonugi\ToolKitTestAssignment\Domain\User\UserInterface;
 use Hemonugi\ToolKitTestAssignment\Domain\User\ViewDto;
 use Hemonugi\ToolKitTestAssignment\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, SecurityUserInterface, PasswordAuthenticatedUserInterface
 {
     public const ROLE_CLIENT = 'ROLE_CLIENT';
     public const ROLE_ADMIN = 'ROLE_ADMIN';

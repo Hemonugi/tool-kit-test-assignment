@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Hemonugi\ToolKitTestAssignment\Domain\Application;
 
 use DateTimeInterface;
+use Hemonugi\ToolKitTestAssignment\Domain\User\UserInterface;
+use Hemonugi\ToolKitTestAssignment\Domain\User\ViewDto as UserViewDto;
 use JsonSerializable;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 
 /**
@@ -20,6 +23,7 @@ use OpenApi\Attributes as OA;
             new OA\Property(property: 'text', description: 'Описание'),
             new OA\Property(property: 'createDate', description: 'Дата создания заявки'),
             new OA\Property(property: 'status', description: 'Статус'),
+            new OA\Property(property: 'creator', ref: new Model(type: UserViewDto::class)),
         ]
 )]
 readonly final class ViewDto implements JsonSerializable
@@ -29,7 +33,8 @@ readonly final class ViewDto implements JsonSerializable
         public string $title,
         public string $text,
         public DateTimeInterface $createDate,
-        public ApplicationStatus $status
+        public ApplicationStatus $status,
+        public UserInterface $creator,
     ) {
     }
 
@@ -41,6 +46,7 @@ readonly final class ViewDto implements JsonSerializable
             'text' => $this->text,
             'createDate' => $this->createDate->format('Y-m-d H:i:s'),
             'status' => $this->status->value,
+            'creator' => $this->creator->getViewDto(),
         ];
     }
 }

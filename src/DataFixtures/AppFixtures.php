@@ -13,6 +13,7 @@ use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationStatus;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ChangeStatusDto;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\CreateDto;
 use Hemonugi\ToolKitTestAssignment\Domain\User\RegisterDto;
+use Hemonugi\ToolKitTestAssignment\Domain\User\UserInterface;
 use Hemonugi\ToolKitTestAssignment\Entity\Application;
 use Hemonugi\ToolKitTestAssignment\Entity\User;
 use Symfony\Component\Clock\MockClock;
@@ -29,8 +30,8 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $this->createUsers($manager);
-        $this->createApplications($manager);
+        $users = $this->createUsers($manager);
+        $this->createApplications($manager, $users);
 
         $manager->flush();
     }
@@ -38,31 +39,39 @@ class AppFixtures extends Fixture
     /**
      * Добавляет заявки в БД
      * @param ObjectManager $manager
+     * @param UserInterface[] $users
      * @return void
      */
-    public function createApplications(ObjectManager $manager): void
+    public function createApplications(ObjectManager $manager, array $users): void
     {
         $date = new DateTimeImmutable('2022-06-16 12:00:00');
 
         $statuses = ApplicationStatus::cases();
-        $j = 0;
+        $statusIndex = 0;
+        $userIndex = 0;
 
         for ($i = 0; $i < 20; $i++) {
             $date = $date->modify('+8 hours');
             $dto = new CreateDto(
                 $this->faker->sentence(),
-                $this->faker->text()
+                $this->faker->text(),
+                $users[$userIndex],
             );
             $application = Application::create($dto, new MockClock($date));
 
-            $status = $statuses[$j];
+            $status = $statuses[$statusIndex];
 
             $statusDto = new ChangeStatusDto($status);
             $application->changeStatus($statusDto);
 
-            $j++;
-            if ($j >= count($statuses)) {
-                $j = 0;
+            $statusIndex++;
+            if ($statusIndex >= count($statuses)) {
+                $statusIndex = 0;
+            }
+
+            $userIndex++;
+            if ($userIndex >= count($users)) {
+                $userIndex = 0;
             }
 
             $manager->persist($application);
@@ -72,13 +81,15 @@ class AppFixtures extends Fixture
     /**
      * Добавляет пользователей в БД
      * @param ObjectManager $manager
-     * @return void
+     * @return UserInterface[] Список пользователей без роли админка
      */
-    private function createUsers(ObjectManager $manager): void
+    private function createUsers(ObjectManager $manager): array
     {
         $roles = [User::ROLE_CLIENT, User::ROLE_ADMIN];
 
-        for ($i = 0; $i < 4; $i++) {
+        $result = [];
+
+        for ($i = 0; $i < 5; $i++) {
             $dto = new RegisterDto(
                 $this->faker->userName(),
                 $this->faker->phoneNumber(),
@@ -89,7 +100,13 @@ class AppFixtures extends Fixture
             $user->setRoles($roles);
             $manager->persist($user);
 
+            if (!in_array(User::ROLE_ADMIN, $user->getRoles(), true)) {
+                $result[] = $user;
+            }
+
             $roles = [User::ROLE_CLIENT];
         }
+
+        return $result;
     }
 }
