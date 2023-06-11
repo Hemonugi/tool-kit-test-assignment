@@ -6,7 +6,7 @@ docker_compose := $(shell command -v docker-compose -f docker-compose.yml -p se 
 # Запускает все необходимое для старта проекта
 init: up install
 	@echo '-------------------------'
-	@echo '| http://localhost:$(NGINX_HOST_HTTP_PORT) |'
+	@echo '| http://localhost:$(NGINX_HOST_HTTP_PORT)/api/doc |'
 	@echo '-------------------------'
 
 # Поднимает докер
