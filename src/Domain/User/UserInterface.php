@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Hemonugi\ToolKitTestAssignment\Domain\User;
 
+use Hemonugi\ToolKitTestAssignment\Domain\User\Dto\RegisterDto;
+use Hemonugi\ToolKitTestAssignment\Domain\User\Dto\ViewDto;
+
 interface UserInterface
 {
     /**

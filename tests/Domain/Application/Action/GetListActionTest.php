@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Hemonugi\ToolKitTestAssignment\Tests\Domain\Application;
+namespace Hemonugi\ToolKitTestAssignment\Tests\Domain\Application\Action;
 
 use DateTimeInterface;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Action\GetListAction;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationInterface;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationRepositoryInterface;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationStatus;
-use Hemonugi\ToolKitTestAssignment\Domain\Application\ForbiddenException;
-use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListAction;
-use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListDto;
-use Hemonugi\ToolKitTestAssignment\Domain\Application\ValidationException;
-use Hemonugi\ToolKitTestAssignment\Domain\Application\ViewDto;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Dto\GetListDto;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Dto\ViewDto;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Exception\ForbiddenException;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Exception\ValidationException;
 use Hemonugi\ToolKitTestAssignment\Domain\User\UserInterface;
 use Hemonugi\ToolKitTestAssignment\Entity\User;
 use Hemonugi\ToolKitTestAssignment\Tests\Domain\User\UserStub;

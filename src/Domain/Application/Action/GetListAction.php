@@ -2,8 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Hemonugi\ToolKitTestAssignment\Domain\Application;
+namespace Hemonugi\ToolKitTestAssignment\Domain\Application\Action;
 
+use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationInterface;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationRepositoryInterface;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Dto\GetListDto;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Dto\ViewDto;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Exception\ForbiddenException;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Exception\ValidationException;
 use Hemonugi\ToolKitTestAssignment\Domain\User\UserInterface;
 use Hemonugi\ToolKitTestAssignment\Entity\User;
 

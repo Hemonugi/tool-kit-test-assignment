@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Hemonugi\ToolKitTestAssignment\Tests\Domain\User;
 
 use Exception;
-use Hemonugi\ToolKitTestAssignment\Domain\User\RegisterDto;
+use Hemonugi\ToolKitTestAssignment\Domain\User\Dto\RegisterDto;
+use Hemonugi\ToolKitTestAssignment\Domain\User\Dto\ViewDto;
 use Hemonugi\ToolKitTestAssignment\Domain\User\UserInterface;
-use Hemonugi\ToolKitTestAssignment\Domain\User\ViewDto;
 
 readonly class UserStub implements UserInterface
 {

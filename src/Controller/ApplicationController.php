@@ -5,23 +5,23 @@ declare(strict_types=1);
 namespace Hemonugi\ToolKitTestAssignment\Controller;
 
 use DateTime;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Action\CreateAction;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Action\GetListAction;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationRepositoryInterface;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationStatus;
-use Hemonugi\ToolKitTestAssignment\Domain\Application\CreateAction;
-use Hemonugi\ToolKitTestAssignment\Domain\Application\CreateDto;
-use Hemonugi\ToolKitTestAssignment\Domain\Application\ForbiddenException;
-use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListAction;
-use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListDto;
-use Hemonugi\ToolKitTestAssignment\Domain\Application\ValidationException;
-use Hemonugi\ToolKitTestAssignment\Domain\Application\ViewDto;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Dto\CreateDto;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Dto\GetListDto;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Dto\ViewDto;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Exception\ForbiddenException;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Exception\ValidationException;
 use Hemonugi\ToolKitTestAssignment\Entity\User;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use OpenApi\Attributes as OA;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 /**

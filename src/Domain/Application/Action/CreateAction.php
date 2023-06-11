@@ -2,7 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Hemonugi\ToolKitTestAssignment\Domain\Application;
+namespace Hemonugi\ToolKitTestAssignment\Domain\Application\Action;
+
+use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationRepositoryInterface;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Dto\CreateDto;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Dto\ViewDto;
 
 /**
  * Экшен создания новой заявки

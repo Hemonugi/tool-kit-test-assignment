@@ -2,18 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Hemonugi\ToolKitTestAssignment\Tests\Domain\Application;
+namespace Hemonugi\ToolKitTestAssignment\Tests\Domain\Application\Dto;
 
 use DateTime;
 use DateTimeInterface;
-use Exception;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationStatus;
-use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListDto;
-use Hemonugi\ToolKitTestAssignment\Domain\Application\ValidationException;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Dto\GetListDto;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Exception\ValidationException;
 use PHPUnit\Framework\TestCase;
-
-use function PHPUnit\Framework\assertNull;
-use function PHPUnit\Framework\assertSame;
 
 class GetListDtoTest extends TestCase
 {

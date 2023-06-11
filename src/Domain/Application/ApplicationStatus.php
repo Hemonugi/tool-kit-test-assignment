@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Hemonugi\ToolKitTestAssignment\Domain\Application;
 
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Exception\ValidationException;
+
 enum ApplicationStatus: string
 {
     case Open = 'open';

@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Hemonugi\ToolKitTestAssignment\Domain\Application;
+namespace Hemonugi\ToolKitTestAssignment\Domain\Application\Dto;
 
 use DateTimeInterface;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationStatus;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Exception\ValidationException;
 
 readonly final class GetListDto
 {

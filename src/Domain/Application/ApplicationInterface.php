@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Hemonugi\ToolKitTestAssignment\Domain\Application;
 
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Dto\ChangeStatusDto;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Dto\CreateDto;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\Dto\ViewDto;
 use Psr\Clock\ClockInterface;
 
 /**

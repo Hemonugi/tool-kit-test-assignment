@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hemonugi\ToolKitTestAssignment\Domain\User;
+namespace Hemonugi\ToolKitTestAssignment\Domain\User\Dto;
 
 readonly final class RegisterDto
 {

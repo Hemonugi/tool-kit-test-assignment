@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hemonugi\ToolKitTestAssignment\Domain\Application;
+namespace Hemonugi\ToolKitTestAssignment\Domain\Application\Dto;
 
 use Hemonugi\ToolKitTestAssignment\Domain\User\UserInterface;
 
