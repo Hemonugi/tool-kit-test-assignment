@@ -21,6 +21,7 @@
         "lexik/jwt-authentication-bundle": "^2.19",
         "nelmio/api-doc-bundle": "^4.11",
         "symfony/asset": "6.3.*",
+        "symfony/cache": "6.3.*",
         "symfony/clock": "6.3.*",
         "symfony/console": "6.3.*",
         "symfony/dotenv": "6.3.*",

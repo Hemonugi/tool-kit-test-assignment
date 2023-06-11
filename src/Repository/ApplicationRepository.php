@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace Hemonugi\ToolKitTestAssignment\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Cache\CacheException;
 use Doctrine\Persistence\ManagerRegistry;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationInterface;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationRepositoryInterface;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\CreateDto;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListDto;
 use Hemonugi\ToolKitTestAssignment\Entity\Application;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Clock\Clock;
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 /**
  * @extends ServiceEntityRepository<Application>
@@ -23,11 +27,16 @@ use Symfony\Component\Clock\Clock;
  */
 class ApplicationRepository extends ServiceEntityRepository implements ApplicationRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    private const CACHE_LIST = 'application-list';
+
+    public function __construct(ManagerRegistry $registry, private readonly TagAwareCacheInterface $cache)
     {
         parent::__construct($registry, Application::class);
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function save(Application $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -35,6 +44,8 @@ class ApplicationRepository extends ServiceEntityRepository implements Applicati
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+
+        $this->cache->invalidateTags([self::CACHE_LIST]);
     }
 
     public function remove(Application $entity, bool $flush = false): void
@@ -48,6 +59,8 @@ class ApplicationRepository extends ServiceEntityRepository implements Applicati
 
     /**
      * @inheritDoc
+     * @throws CacheException
+     * @throws InvalidArgumentException
      */
     public function getList(GetListDto $listDto): array
     {
@@ -72,7 +85,14 @@ class ApplicationRepository extends ServiceEntityRepository implements Applicati
                 ->setParameter(':creator_id', $listDto->creatorId);
         }
 
-        return  $queryBuilder->getQuery()->getResult();
+        $query = $queryBuilder->getQuery();
+        $key = md5($query->getSQL());
+
+        return $this->cache->get($key, function (ItemInterface $item) use ($query) {
+            $item->tag([self::CACHE_LIST]);
+
+            return $query->getResult();
+        });
     }
 
     /**
