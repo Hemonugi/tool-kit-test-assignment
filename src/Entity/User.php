@@ -136,4 +136,12 @@ class User implements UserInterface, SecurityUserInterface, PasswordAuthenticate
             address: $this->address,
         );
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->getRoles(), true);
+    }
 }

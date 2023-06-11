@@ -18,4 +18,11 @@ interface UserInterface
      * @return self
      */
     public static function createUser(RegisterDto $registerUserDto): self;
+
+    /**
+     * Имеет ли пользователь указанную роль
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role): bool;
 }

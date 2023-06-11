@@ -18,6 +18,7 @@ readonly final class GetListDto
         public ?array $statuses = null,
         public ?DateTimeInterface $startDateTime = null,
         public ?DateTimeInterface $endDateTime = null,
+        public ?int $creatorId = null,
     ) {
         if (
             $this->startDateTime !== null && $this->endDateTime !== null
