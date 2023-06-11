@@ -40,11 +40,27 @@ class ApplicationController extends AbstractController
      */
     #[Route('/list', name: 'application_list', methods: ['get'])]
     #[OA\Response(
-        response: 200,
+        response: Response::HTTP_OK,
         description: 'Список заявок',
         content: new OA\JsonContent(
             type: 'array',
             items: new OA\Items(ref: new Model(type: ViewDto::class))
+        )
+    )]
+    #[OA\Response(
+        response: Response::HTTP_FORBIDDEN,
+        description: 'Если пользовать не имеет прав получить запрашиваемый ресурс',
+        content: new OA\JsonContent(
+            type: 'string',
+            example: 'Клиент не может смотреть чужие заявки'
+        )
+    )]
+    #[OA\Response(
+        response: Response::HTTP_BAD_REQUEST,
+        description: 'Если переданы невалидные параметры',
+        content: new OA\JsonContent(
+            type: 'string',
+            example: 'Некорректный запрос'
         )
     )]
     #[OA\Parameter(
@@ -112,6 +128,35 @@ class ApplicationController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/create', name: 'application_create', methods: ['post'])]
+    #[OA\Response(
+        response: Response::HTTP_OK,
+        description: 'Список заявок',
+        content: new OA\JsonContent(
+            ref: new Model(type: ViewDto::class)
+        )
+    )]
+    #[OA\Response(
+        response: Response::HTTP_BAD_REQUEST,
+        description: 'При отсутствии необходимых параметров',
+        content: new OA\JsonContent(
+            type: 'string',
+            example: 'Отсутствуют необходимые параметры'
+        )
+    )]
+    #[OA\RequestBody(
+        content: [
+            new OA\MediaType(
+                mediaType: "application/x-www-form-urlencoded",
+                schema: new OA\Schema(
+                    required: ['title', 'text'],
+                    properties: [
+                        new OA\Property(property: "title", type: "string"),
+                        new OA\Property(property: "text", type: "string"),
+                    ]
+                )
+            ),
+        ],
+    )]
     public function create(
         Request $request,
         CreateAction $action,
