@@ -7,6 +7,8 @@ namespace Hemonugi\ToolKitTestAssignment\Controller;
 use DateTime;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationRepositoryInterface;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationStatus;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\CreateAction;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\CreateDto;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ForbiddenException;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListAction;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListDto;
@@ -100,5 +102,34 @@ class ApplicationController extends AbstractController
         } catch (ValidationException $e) {
             return $this->json($e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
+    }
+
+    /**
+     * @param Request $request
+     * @param CreateAction $action
+     * @param User|null $user
+     * @param ApplicationRepositoryInterface $repository
+     * @return JsonResponse
+     */
+    #[Route('/create', name: 'application_create', methods: ['post'])]
+    public function create(
+        Request $request,
+        CreateAction $action,
+        #[CurrentUser] ?User $user,
+        ApplicationRepositoryInterface $repository,
+    ): JsonResponse {
+        $title = $request->request->get('title');
+        $text = $request->request->get('text');
+
+        if ($title === null || $text === null) {
+            return $this->json('Отсутствуют необходимые параметры', Response::HTTP_BAD_REQUEST);
+        }
+
+        return $this->json(
+            $action(
+                new CreateDto(title: $title, text: $text, creator: $user),
+                $repository
+            )
+        );
     }
 }

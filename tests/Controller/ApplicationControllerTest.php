@@ -7,10 +7,16 @@ namespace Hemonugi\ToolKitTestAssignment\Tests\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Exception;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationRepositoryInterface;
+use Hemonugi\ToolKitTestAssignment\Entity\Application;
 use Hemonugi\ToolKitTestAssignment\Entity\User;
+use Hemonugi\ToolKitTestAssignment\Repository\ApplicationRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
+
+use function PHPUnit\Framework\assertSame;
 
 class ApplicationControllerTest extends WebTestCase
 {
@@ -89,5 +95,62 @@ class ApplicationControllerTest extends WebTestCase
             ->getSingleResult();
 
         return $user->getViewDto()->id;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testUserShouldBeAbleToCreateApplication(): void
+    {
+        $client = $this->createAuthenticatedClient(self::CLIENT_USER);
+
+        $client->request('POST', '/api/application/create', [
+            'title' => 'test application',
+            'text' => 'created test application',
+        ]);
+
+        self::assertResponseIsSuccessful();
+
+        $application = json_decode($client->getResponse()->getContent(), true);
+        assertSame('test application', $application['title']);
+        assertSame('created test application', $application['text']);
+
+
+        self::ensureKernelShutdown();
+        /** @var ApplicationRepository $repository */
+        $repository = static::getContainer()->get(ApplicationRepository::class);
+        self::assertNotNull($repository->find($application['id']));
+    }
+
+    /**
+     * @dataProvider invalidCreateApplicationParameters()
+     * @param array $params
+     * @return void
+     */
+    public function testUserShouldNotBeAbleToCreateApplicationResultTextOrTitle(array $params): void
+    {
+        $client = $this->createAuthenticatedClient(self::CLIENT_USER);
+
+        $client->request('POST', '/api/application/create', $params);
+
+        self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @return array
+     */
+    public function invalidCreateApplicationParameters(): array
+    {
+        return [
+            [
+                ['title' => 'test application'],
+            ],
+            [
+                ['text' => 'created test application'],
+            ],
+            [
+                [],
+            ],
+        ];
     }
 }

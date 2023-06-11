@@ -6,9 +6,12 @@ namespace Hemonugi\ToolKitTestAssignment\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationInterface;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationRepositoryInterface;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\CreateDto;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListDto;
 use Hemonugi\ToolKitTestAssignment\Entity\Application;
+use Symfony\Component\Clock\Clock;
 
 /**
  * @extends ServiceEntityRepository<Application>
@@ -70,5 +73,16 @@ class ApplicationRepository extends ServiceEntityRepository implements Applicati
         }
 
         return  $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function create(CreateDto $dto): ApplicationInterface
+    {
+        $application = Application::create($dto, Clock::get());
+        $this->save($application, true);
+
+        return $application;
     }
 }
