@@ -91,7 +91,7 @@ class AppFixtures extends Fixture
 
         for ($i = 0; $i < 5; $i++) {
             $dto = new RegisterDto(
-                $this->faker->userName(),
+                $this->createNick($i),
                 $this->faker->phoneNumber(),
                 $this->faker->address(),
             );
@@ -108,5 +108,19 @@ class AppFixtures extends Fixture
         }
 
         return $result;
+    }
+
+    /**
+     * Создает имя пользователя в соответствии с порядковым номером
+     * @param int $i
+     * @return string
+     */
+    private function createNick(int $i): string
+    {
+        return match ($i) {
+            0 => 'admin',
+            1 => 'client',
+            default => $this->faker->userName(),
+        };
     }
 }

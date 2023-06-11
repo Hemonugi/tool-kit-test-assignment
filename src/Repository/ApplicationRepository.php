@@ -64,6 +64,11 @@ class ApplicationRepository extends ServiceEntityRepository implements Applicati
                 ->setParameter(':end_date', $listDto->endDateTime->format('Y-m-d H:i:s'));
         }
 
+        if ($listDto->creatorId !== null) {
+            $queryBuilder->andWhere('a.creator = :creator_id')
+                ->setParameter(':creator_id', $listDto->creatorId);
+        }
+
         return  $queryBuilder->getQuery()->getResult();
     }
 }
