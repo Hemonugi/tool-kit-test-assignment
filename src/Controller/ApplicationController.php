@@ -17,6 +17,7 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
@@ -33,8 +34,7 @@ class ApplicationController extends AbstractController
      * @param ApplicationRepositoryInterface $repository
      * @param User|null $user
      * @return JsonResponse
-     * @throws ForbiddenException
-     * @throws ValidationException
+     * @throws \Exception
      */
     #[Route('/list', name: 'application_list', methods: ['get'])]
     #[OA\Response(
@@ -86,13 +86,19 @@ class ApplicationController extends AbstractController
         $endDate = $request->query->get('endDate');
         $userId = $request->query->get('userId');
 
-        $dto = new GetListDto(
-            statuses: $request->query->all('statuses'),
-            startDateTime: $startDate !== null ? new DateTime($startDate) : null,
-            endDateTime: $endDate !== null ? new DateTime($endDate) : null,
-            creatorId: $userId !== null ? (int)$userId : null,
-        );
+        try {
+            $dto = new GetListDto(
+                statuses: $request->query->all('statuses'),
+                startDateTime: $startDate !== null ? new DateTime($startDate) : null,
+                endDateTime: $endDate !== null ? new DateTime($endDate) : null,
+                creatorId: $userId !== null ? (int)$userId : null,
+            );
 
-        return $this->json($getListAction($dto, $user, $repository));
+            return $this->json($getListAction($dto, $user, $repository));
+        } catch (ForbiddenException $e) {
+            return $this->json($e->getMessage(), Response::HTTP_FORBIDDEN);
+        } catch (ValidationException $e) {
+            return $this->json($e->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 }
