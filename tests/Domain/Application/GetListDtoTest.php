@@ -7,6 +7,7 @@ namespace Hemonugi\ToolKitTestAssignment\Tests\Domain\Application;
 use DateTime;
 use DateTimeInterface;
 use Exception;
+use Hemonugi\ToolKitTestAssignment\Domain\Application\ApplicationStatus;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\GetListDto;
 use Hemonugi\ToolKitTestAssignment\Domain\Application\ValidationException;
 use PHPUnit\Framework\TestCase;
@@ -33,7 +34,7 @@ class GetListDtoTest extends TestCase
     /**
      * PDO должно создаваться без ошибок
      * @dataProvider dtoCreationDataProvider
-     * @param string[]|null $statuses
+     * @param ApplicationStatus[]|null $statuses
      * @param DateTimeInterface|null $startDate
      * @param DateTimeInterface|null $endDate
      * @throws ValidationException
@@ -53,7 +54,7 @@ class GetListDtoTest extends TestCase
     {
         return [
             'Если все параметры валидные, то все должно быт ОК' => [
-                'statuses' => ['open', 'archived'],
+                'statuses' => [ApplicationStatus::Open, ApplicationStatus::Archived],
                 'startDate' => new DateTime('2023-08-06 12:00:00'),
                 'endDate' => new DateTime('2024-08-06 12:00:00'),
             ],
