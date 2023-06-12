@@ -18,3 +18,44 @@ nelmio_api_doc:
                     bearerFormat: JWT
         security:
             - Bearer: []
+        paths:
+            /api/login_check:
+                post:
+                    requestBody:
+                        content:
+                            application/json:
+                                schema:
+                                    required:
+                                        - username
+                                        - password
+                                    properties:
+                                        username:
+                                            type: string
+                                            example: client
+                                        password:
+                                            type: string
+                                            example: '123'
+                                    type: object
+                    responses:
+                        '200':
+                            description: Список заявок
+                            content:
+                                application/json:
+                                    schema:
+                                        properties:
+                                            token:
+                                                type: string
+                                        type: object
+                        '401':
+                            description: Ошибка авторизации
+                            content:
+                                application/json:
+                                    schema:
+                                        properties:
+                                            code:
+                                                description: Код ошибки
+                                                type: string
+                                            message:
+                                                description: Описание ошибки
+                                                type: string
+                                        type: object
